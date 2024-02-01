@@ -2,11 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Book = require ('./models/Book');
 const bookRoutes = require('./routes/book');
+const userRoutes = require('./routes/user');
 
 const app = express();
-
-app.use(express.json());
-app.use('/api/books', bookRoutes);
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,5 +21,10 @@ mongoose.connect('mongodb+srv://adminOC:cYOj87wWszpWWsPe@databaseoc.6ynao2m.mong
     console.log('Unable to connect to MongoDB Community Atlas!');
     console.error(error);
 });
+
+app.use(express.json());
+
+app.use('/api/books', bookRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
