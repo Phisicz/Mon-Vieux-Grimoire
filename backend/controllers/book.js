@@ -2,16 +2,21 @@ const Book = require ('../models/Book');
 
 // Create a new book in the database
 exports.createBook = (req, res, next) => {
+    const bookObject = JSON.parse(req.body.book);
+    delete bookObject._id;
+    delete bookObject._userId;
     const book = new Book({
-        ...req.body
+        ...bookObject,
+        userId: req.auth.userId,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
   
     book.save()
     .then((book) => {
-        res.status(201).json({book: book});
+        res.status(201).json({message: 'Livre enregistré'});
     })
     .catch((error) => {
-        res.status(400).json({error: error});
+        res.status(400).json({ error });
     });
   };
 
@@ -22,7 +27,7 @@ exports.getAllBooks = (req, res, next) => {
         res.status(200).json(books);
     })
     .catch((error) => {
-        res.status(400).json({error: error});
+        res.status(400).json({ error });
     });
   }; 
   
@@ -33,7 +38,7 @@ exports.getOneBook = (req, res, next) => {
         res.status(200).json(book);
     })
     .catch((error) => {
-        res.status(404).json({error: error});
+        res.status(404).json({ error });
     });
   };
 
@@ -48,7 +53,7 @@ exports.updateBook = (req, res, next) => {
         res.status(201).json({message: 'Modified!'});
     })
     .catch((error) => {
-        res.status(400).json({error: error});
+        res.status(400).json({ error });
     });
   };
 
@@ -59,6 +64,6 @@ exports.updateBook = (req, res, next) => {
         res.status(201).json({message: 'Deleted!'});
     })
     .catch((error) => {
-        res.status(404).json({error: error});
+        res.status(404).json({ error });
     });
   };
