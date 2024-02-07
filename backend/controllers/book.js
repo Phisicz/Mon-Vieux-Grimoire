@@ -9,9 +9,13 @@ exports.createBook = (req, res, next) => {
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        ratings: {
+            userId: req.auth.userId,
+            grade: 0,
+            averageRating:0
+        }
     });
-  
     book.save()
     .then((book) => {
         res.status(201).json({message: 'Livre enregistré'});
@@ -20,6 +24,43 @@ exports.createBook = (req, res, next) => {
         res.status(400).json({ error });
     });
   };
+
+  // Set the rating for the provided user ID
+exports.setBookRating = (req, res, next) => {
+    const { userId, rating } = req.body;
+    const bookId = req.params.id;
+
+    // Validate the rating value
+    if (rating < 0 || rating > 5) {
+        return res.status(400).json({ error: 'Rating must be between 0 and 5' });
+    }
+
+    // Find the book by its ID in the database
+    Book.findById(bookId)
+        .then(book => {
+            if (!book) {
+                return res.status(404).json({ error: 'Book not found' });
+            }
+
+            // Check if the user has already rated the book
+            const existingRating = book.rating.find(entry => entry.userId === userId);
+            if (existingRating) {
+                return res.status(400).json({ error: 'User has already rated this book' });
+            }
+
+            // Add the new rating entry to the book's rating array
+            book.rating.push({ userId, rating });
+
+            // Save the updated book
+            return book.save();
+        })
+        .then(updatedBook => {
+            res.status(200).json(updatedBook);
+        })
+        .catch(error => {
+            res.status(500).json({ error: 'Internal server error' });
+        });
+};
 
   // Return all books in the database
 exports.getAllBooks = (req, res, next) => {
