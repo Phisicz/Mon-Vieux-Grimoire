@@ -13,7 +13,7 @@ router.post('/', auth, multer, bookController.createBook);
 // Return the single book with the provided _id
   router.get('/:id', bookController.getOneBook);
 // Update the book with the provided  _id  with the data provided in the request body.
-  router.put('/:id', auth, bookController.updateBook);
+  router.put('/:id', auth, multer, bookController.updateBook);
 // Delete the single book with the provided _id
   router.delete('/:id', auth, bookController.deleteBook);
 
