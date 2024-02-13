@@ -7,11 +7,11 @@ const bookSchema = mongoose.Schema({
   imageUrl: { type: String, required: true }, //url de la couverture du livre
   year: { type: Number, required: true }, //année de publication du livre
   genre: {type: String, required: true}, //genre du livre
-  ratings: {
+  ratings: [{
     userId: { type: String, required: true }, //user unique mongodb qui a noté le livre
-    grade: { type: Number, required: true }, //note d'un livre
+    grade: { type: Number, required: true, min: 0, max: 5 }, //note d'un livre
     averageRating: { type: Number, required: true } //note moyenne du livre
-  }
+  }]
 });
 
 module.exports = mongoose.model('Book', bookSchema);
