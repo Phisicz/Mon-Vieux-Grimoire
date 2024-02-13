@@ -4,7 +4,7 @@ Voici ma proposition de **l'app Mon Vieux Grimoire** ! 👋
 
 ⬇️ Lien pour y accéder ⬇️
 
-https://p6-kasa-nine.vercel.app
+LIEN EN COURS
 
 ---
 
@@ -48,9 +48,9 @@ L'objectif principal de ce projet (P7) était principalement de [commencer à co
 
 ## 🛠 Technologies Utilisées
 
-![Static Badge](https://img.shields.io/badge/node-white?style=for-the-badge&logo=react&color=%231E1E1E)
-![Static Badge](https://img.shields.io/badge/express-white?style=for-the-badge&logo=react-router&color=%231E1E1E)
-![Static Badge](https://img.shields.io/badge/mongoose-white?style=for-the-badge&logo=sass&color=%231E1E1E)
+![Static Badge](https://img.shields.io/badge/node-white?style=for-the-badge&logo=node&color=%231E1E1E)
+![Static Badge](https://img.shields.io/badge/express-white?style=for-the-badge&logo=express&color=%231E1E1E)
+![Static Badge](https://img.shields.io/badge/mongoose-white?style=for-the-badge&logo=mongoose&color=%231E1E1E)
 
 
 - **Node.js:** Utilisé pour construire l'interface utilisateur avec des composants réutilisables.
@@ -66,23 +66,28 @@ L'objectif principal de ce projet (P7) était principalement de [commencer à co
 1. Crééz un dossier avec le nom de votre choix, ouvrez le dossier dans votre IDE et exécutez la commande dans le terminal :
 
     ```bash
-    git clone https://github.com/Phisicz/P6-Kasa.git
+    git clone https://github.com/Phisicz/Mon-Vieux-Grimoire.git
     ```
 
-2. Maintenant que vous avez cloné le repo, il va falloir installer toutes les dépendances (dans package.json), et pour se faire, exécutez les commandes suivantes :
+2. Maintenant que vous avez cloné le repo, il va falloir installer toutes les dépendances (dans package.json) à la fois pour le côté frontend et le côté backend. Pour se faire, exécutez les commandes suivantes dans les deux dossiers (en prenant soin de vous y placer avec la commande "cd") :
 
     ```bash
-    yarn
+    npm install
     ```
 
-3. Le projet est maintenant prêt à être lancé en local, pour lancer l'application exécutez ceci :
+3. Le projet est maintenant prêt à être lancé en local, pour lancer l'application exécutez ceci dans le dossier backend (si vous n'avez pas nodemon, installez-le) :
 
     ```bash
-    yarn start
+    nodemon server
+    ```
+    Puis dans votre dossier frontend, executez ceci :
+
+    ```bash
+    npm start
     ```
 
-Si vous souhaitez avoir votre fork en ligne il faudra le mettre en ligne à l'aide de vercel ou autre hébergeur.
+Si vous souhaitez avoir votre fork en ligne il faudra le mettre en ligne à l'aide d'un hébergeur qui prend en charge le frontend et le backend sinon il faudra penser à rendre le projet serverless pour l'héberger sur Vercel par exemple.
 
 ---
 
-🤝 Merci d'avoir consulté ma version de *l'app Kasa* !
+🤝 Merci d'avoir consulté ma version de *l'app Mon Vieux Grimoire* !
