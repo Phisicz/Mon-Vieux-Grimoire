@@ -27,8 +27,12 @@ exports.setRating = (req, res, next) => {
                 (acc, curr) => acc + curr.grade,
                 0
             );
+
+            // Adjust the divisor to include the current user's rating
+            const divisor = book.ratings.length;
+
             book.averageRating =
-                Math.round((totalRatings / book.ratings.length) * 10) / 10;
+                Math.round((totalRatings / divisor) * 10) / 10;
 
             return book
                 .save()
@@ -55,7 +59,7 @@ exports.createBook = (req, res, next) => {
         ...bookObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        averageRating: 0
+        averageRating: 0,
     });
     book.save()
         .then((book) => {
