@@ -44,13 +44,6 @@ exports.setRating = (req, res, next) => {
 
 // Create a new book in the database
 exports.createBook = (req, res, next) => {
-    // Checks if user has uploaded picture
-    if (!req.file) {
-        return res
-            .status(400)
-            .json({ message: "L'ajout d'une image est obligatoire" });
-    }
-
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
     delete bookObject._userId;
