@@ -4,7 +4,7 @@ Voici ma proposition de **l'app Mon Vieux Grimoire** ! 👋
 
 ⬇️ Lien pour y accéder ⬇️
 
-LIEN EN COURS
+PAS DISPONIBLE POUR LE MOMENT
 
 ---
 
@@ -48,14 +48,14 @@ L'objectif principal de ce projet (P7) était principalement de [commencer à co
 
 ## 🛠 Technologies Utilisées
 
-![Static Badge](https://img.shields.io/badge/node-white?style=for-the-badge&logo=node&color=%231E1E1E)
+![Static Badge](https://img.shields.io/badge/node.js-white?style=for-the-badge&logo=node.js&color=1E1E1E)
 ![Static Badge](https://img.shields.io/badge/express-white?style=for-the-badge&logo=express&color=%231E1E1E)
 ![Static Badge](https://img.shields.io/badge/mongoose-white?style=for-the-badge&logo=mongoose&color=%231E1E1E)
 
 
-- **Node.js:** Utilisé pour construire l'interface utilisateur avec des composants réutilisables.
-- **Express:** Employé pour gérer le routage dans l'application.
-- **Mongoose:** Utilisé pour écrire des styles CSS plus avancés et maintenables.
+- **Node.js:** Utilisé comme environnement d'exécution côté serveur pour la logique de l'application, la gestion des requêtes API, et l'interaction avec la base de données.
+- **Express:** Employé pour la création de routes API et la gestion des requêtes et réponses HTTP.
+- **Mongoose:** Utilisé pour simplifier les interactions avec la base de données MongoDB en permettant la définition de schémas et la manipulation de données.
 
 ---
 
@@ -74,8 +74,15 @@ L'objectif principal de ce projet (P7) était principalement de [commencer à co
     ```bash
     npm install
     ```
+3. À présent vous avez votre fork du projet, mais il ne fonctionnera pas si vous ne précisez pas vos variables ".env". Pour ça créez un fichier ".env" à la racine de votre backend puis collez-y ceci:
 
-3. Le projet est maintenant prêt à être lancé en local, pour lancer l'application exécutez ceci dans le dossier backend (si vous n'avez pas nodemon, installez-le) :
+    ```bash
+    DB_URI=VOTRE_LIEN_DE_CONNEXION_MONGODB
+    JWT_SECRET=VOTRE_TOKEN_SECRET_POUR_JSONWEBTOKEN
+    ```
+Remplacez "VOTRE_LIEN_DE_CONNEXION_MONGODB" et "VOTRE_TOKEN_SECRET_POUR_JSONWEBTOKEN" par vos éléments à vous.
+
+4. Le projet est maintenant prêt à être lancé en local, pour lancer l'application exécutez ceci dans le dossier backend (si vous n'avez pas nodemon, installez-le) :
 
     ```bash
     nodemon server
@@ -86,7 +93,9 @@ L'objectif principal de ce projet (P7) était principalement de [commencer à co
     npm start
     ```
 
-Si vous souhaitez avoir votre fork en ligne il faudra le mettre en ligne à l'aide d'un hébergeur qui prend en charge le frontend et le backend sinon il faudra penser à rendre le projet serverless pour l'héberger sur Vercel par exemple.
+5. Vous pouvez maintenant commencer à utiliser le l'application pour y ajouter vos propres livres, noter les livres, modifier/supprimer, etc.
+
+Si vous souhaitez mettre en ligne le projet, il faudra un hébergeur qui prend en charge le frontend et le backend sinon il faudra penser à rendre le projet serverless pour l'héberger sur Vercel par exemple.
 
 ---
 
