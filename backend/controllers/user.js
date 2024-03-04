@@ -32,7 +32,7 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 token: jsonwebtoken.sign({
                     userId: user._id },
-                    'RANDOM_TOKEN_SECRET',
+                    tokenConfig.jwtSecret,
                     { expiresIn: '24h' }
                 )
             });
