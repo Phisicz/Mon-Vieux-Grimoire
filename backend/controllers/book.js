@@ -71,7 +71,7 @@ exports.createBook = (req, res, next) => {
             fs.unlink(req.file.path, (error) => {
                 req.file.path = `${req.file.path.split(".")[0]}.webp`;
             });
-            res.status(400).json({ error });
+            res.status(500).json({ error });
         });
 };
 
