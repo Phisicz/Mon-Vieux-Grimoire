@@ -15,7 +15,6 @@ function Home() {
     async function getBooksList() {
       const data = await getBooks();
       if (data) {
-        console.log(data);
         setBooks(data);
         setLoading(false);
       }
