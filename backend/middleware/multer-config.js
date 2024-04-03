@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-// Extensions d'image autorisées
+// Authorized image extensions
 const MIME_TYPES = {
     "image/jpg": "jpg",
     "image/jpeg": "jpg",
@@ -8,22 +8,22 @@ const MIME_TYPES = {
     "image/webp": "webp",
 };
 
-// Stocke les images téléchargées dans le dossier racine 'images'
+// Stores downloaded images in the 'images' folder
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, "images");
     },
     filename: (req, file, callback) => {
-        // Remplace les espaces par des underscores dans le nom de fichier original
+        // Replaces spaces with underscores in the original filename
         const name = file.originalname.split(" ").join("_").replace(/\.[^/.]+$/, "");
         const extension = MIME_TYPES[file.mimetype];
 
         let fileName;
         if (req.body.bookId) {
-            // Modifie le nom du fichier pour inclure l'ID du livre
+            // Modifies file name to include book ID
             fileName = req.body.bookId + "_" + name + "_" + Date.now() + "." + extension;
         } else {
-            // Si bookId est indéfini, garde le nom de fichier original
+            // If bookId is undefined, keeps original file name
             fileName = name + "_" + Date.now() + "." + extension;
         }
 
@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
     },
 });
 
-// Limite de taille de fichier de 2MB
+// Sets a file limit of 2MB
 module.exports = multer({
     storage: storage,
     limits: {

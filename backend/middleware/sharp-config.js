@@ -1,7 +1,7 @@
 const sharp = require("sharp");
-const fse = require('fs-extra'); // Utilisez fs-extra pour la suppression
+const fse = require('fs-extra');
 
-// Désactive la mise en cache de sharp
+// Disables sharp caching, useful for avoiding weird behaviours where images wouldnt be deleted from 'images' folder
 sharp.cache(false);
 
 module.exports = async (req, res, next) => {
@@ -11,17 +11,17 @@ module.exports = async (req, res, next) => {
     const newFilePath = originalFilePath.replace(/\.[^/.]+$/, "") + ".webp";
 
     try {
-        // Convertir l'image en WebP
+        // Convert image to WebP
         await sharp(originalFilePath)
             .webp({ quality: 80 })
             .toFile(newFilePath);
 
-        // Supprimer l'image originale après la conversion
+        // Delete original image after conversion
         await fse.remove(originalFilePath).catch((error) => {
             console.error(`Erreur lors de la tentative de suppression du fichier original : ${originalFilePath}`, error);
         });
 
-        // Mise à jour du chemin du fichier dans la requête pour utiliser le nouveau fichier WebP
+        // Update file path in request to use new WebP file
         req.file.path = newFilePath;
         next();
     } catch (error) {
