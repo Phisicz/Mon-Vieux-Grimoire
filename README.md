@@ -74,7 +74,7 @@ L'objectif principal de ce projet (P7) était principalement de [commencer à co
     ```bash
     npm install
     ```
-3. À présent vous avez votre fork du projet, mais il ne fonctionnera pas si vous ne précisez pas vos variables ".env". Pour ça créez un fichier ".env" à la racine de votre backend puis collez-y ceci:
+3. À présent vous avez votre fork du projet, mais il ne fonctionnera pas si vous ne précisez pas vos variables ".env". Pour ça modifier les valeurs ci-dessous dans le fichier .env.local et renommez le .env une fois terminé:
 
     ```bash
     DB_URI=VOTRE_LIEN_DE_CONNEXION_MONGODB
