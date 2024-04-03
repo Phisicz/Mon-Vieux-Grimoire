@@ -4,74 +4,92 @@ const fs = require('fs');
 // Create book rating
 exports.setRating = (req, res, next) => {
     const user = req.body.userId;
+    const grade = req.body.rating;
 
-    const newRating = {
-        userId: user,
-        grade: req.body.rating,
-    };
+    // Vérifiez si la note est un nombre valide et entre 1 et 5
+    if (isNaN(grade) || grade < 1 || grade > 5) {
+        return res.status(400).json({ message: "La note doit être comprise entre 1 et 5." });
+    }
 
+    // Vérifiez si l'utilisateur est autorisé à noter le livre
     if (user !== req.auth.userId) {
         return res.status(403).json({ message: "Non autorisé" });
     }
 
+    // Trouvez le livre et mettez à jour la note
     Book.findOne({ _id: req.params.id })
         .then((book) => {
-            // Checks if book has rating already from a given user
-            if (book.ratings.find((rating) => rating.userId === user)) {
+            if (!book) {
+                return res.status(404).json({ message: "Livre non trouvé" });
+            }
+
+            // Vérifiez si l'utilisateur a déjà noté ce livre
+            if (book.ratings.some(rating => rating.userId.toString() === user.toString())) {
                 return res.status(401).json({ message: "Livre déjà noté" });
             }
+
+            // Ajoutez la nouvelle note au livre
+            const newRating = {
+                userId: user,
+                grade: grade,
+            };
             book.ratings.push(newRating);
 
-            // Update rating
-            const totalRatings = book.ratings.reduce(
-                (acc, curr) => acc + curr.grade,
-                0
-            );
+            // Calculez la nouvelle moyenne des notes
+            const totalRatings = book.ratings.reduce((acc, curr) => acc + Number(curr.grade), 0);
+            book.averageRating = Math.round((totalRatings / book.ratings.length) * 10) / 10;
 
-            // Adjust the divisor to include the current user's rating
-            const divisor = book.ratings.length;
-
-            book.averageRating =
-                Math.round((totalRatings / divisor) * 10) / 10;
-
-            return book
-                .save()
-                .then((updatedBook) => res.status(200).json(updatedBook))
-                .catch((error) => res.status(400).json({ error }));
+            // Sauvegardez le livre avec la nouvelle note
+            return book.save();
         })
-        .catch((error) => res.status(400).json({ error }));
+        .then(updatedBook => {
+            res.status(200).json(updatedBook);
+        })
+        .catch(error => {
+            res.status(400).json({ error });
+        });
 };
+
 
 // Create a new book in the database
 exports.createBook = (req, res, next) => {
-
-    //Verifies if user has submitted a picture
     if (!req.file) {
-        return res
-            .status(400)
-            .json({ message: "L'ajout d'une image est obligatoire" });
+        return res.status(400).json({ message: "Vous devez ajouter une image pour créer un livre." });
     }
 
-    const bookObject = JSON.parse(req.body.book);
-    delete bookObject._id;
-    delete bookObject._userId;
+    let bookObject;
+    try {
+        bookObject = JSON.parse(req.body.book);
+        
+        // Ici, vous pouvez vérifier si la note a été fournie dans l'objet book
+        if (!bookObject.averageRating || bookObject.averageRating < 1 || bookObject.averageRating > 5) {
+            return res.status(400).json({ message: "Vous devez attribuer une note entre 1 et 5 pour créer un livre." });
+        }
+
+        // Vous pourriez également vouloir vérifier si un tableau de ratings est fourni, et s'il contient au moins une note
+        if (!bookObject.ratings || !bookObject.ratings.length || bookObject.ratings.some(r => r.grade < 1 || r.grade > 5)) {
+            return res.status(400).json({ message: "Vous devez attribuer une note valide au livre." });
+        }
+
+        delete bookObject._id;
+        delete bookObject._userId;
+
+    } catch (error) {
+        return res.status(400).json({ message: "Les données du livre sont invalides. Veuillez réessayer." });
+    }
 
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split(".")[0]}.webp`,
-        averageRating: 0,
     });
+
     book.save()
-        .then((book) => {
-            res.status(201).json({ message: 'Livre enregistré' });
-        })
-        //Removes image from images folder in case of an error
+        .then(() => res.status(201).json({ message: 'Livre enregistré avec succès.' }))
         .catch((error) => {
-            fs.unlink(req.file.path, (error) => {
-                req.file.path = `${req.file.path.split(".")[0]}.webp`;
+            fs.unlink(req.file.path, () => {
+                res.status(500).json({ error });
             });
-            res.status(500).json({ error });
         });
 };
 
