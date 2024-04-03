@@ -16,9 +16,6 @@ module.exports = async (req, res, next) => {
             .webp({ quality: 80 })
             .toFile(newFilePath);
 
-        console.log(`Tentative de suppression du fichier original : ${originalFilePath}`);
-        console.log(`Chemin du nouveau fichier WebP : ${newFilePath}`);
-
         // Supprimer l'image originale après la conversion
         await fse.remove(originalFilePath).catch((error) => {
             console.error(`Erreur lors de la tentative de suppression du fichier original : ${originalFilePath}`, error);

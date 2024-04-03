@@ -1,4 +1,3 @@
-
 const multer = require("multer");
 
 // Extensions d'image autorisées
